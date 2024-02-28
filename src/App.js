@@ -1,33 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
+import List from "./components/List";
 
 export default function App() {
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
-
-  const btnStyle = {
-    color: "#fff",
-    border: "none",
-    padding: "5px 9px",
-    borderRadius: "50%",
-    cursor: "pointer",
-    float: "right",
-  };
-
-  const getStyle = (completed) => {
-    return {
-      padding: "10px",
-      borderBottom: "1px #ccc dotted",
-      textDecoration: completed ? "line-through" : "none",
-    };
-  };
-
-  // 삭제
-  const handleClick = (id) => {
-    let newTodoData = todoData.filter((data) => data.id !== id); // 해당 id 제외한 모든 data 보여주기
-    console.log("newTodoData", newTodoData);
-    setTodoData(newTodoData); // 화면에 렌더링도 해주기!
-  };
 
   const handleChange = (e) => {
     setValue(e.target.value); // 입력한 값이 화면에 나옴
@@ -49,18 +26,6 @@ export default function App() {
     setValue("");
   };
 
-  // 완료
-  const handleCompleteChange = (id) => {
-    let newTodoData = todoData.map((data) => {
-      if (data.id === id) {
-        data.completed = !data.completed;
-      }
-      return data;
-    });
-
-    setTodoData(newTodoData);
-  };
-
   return (
     <div className="container">
       <div className="todoBlock">
@@ -68,20 +33,7 @@ export default function App() {
           <h1>할 일 목록</h1>
         </div>
 
-        {todoData.map((data) => (
-          <div style={getStyle(data.completed)} key={data.id}>
-            <input
-              type="checkbox"
-              defaultChecked={false}
-              onChange={() => handleCompleteChange(data.id)}
-            />
-            {data.title}
-            <button style={btnStyle} onClick={() => handleClick(data.id)}>
-              x
-            </button>
-          </div>
-        ))}
-
+        <List todoData={todoData} setTodoData={setTodoData} />
         <form style={{ display: "flex" }} onSubmit={handleSubmit}>
           <input
             type="text"
