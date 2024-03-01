@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import "./App.css";
 import Lists from "./components/Lists";
 import Form from "./components/Form";
@@ -6,6 +6,16 @@ import Form from "./components/Form";
 export default function App() {
   const [todoData, setTodoData] = useState([]);
   const [value, setValue] = useState("");
+
+  // 삭제
+  const handleClick = useCallback(
+    (id) => {
+      let newTodoData = todoData.filter((data) => data.id !== id); // 해당 id 제외한 모든 data 보여주기
+      console.log("newTodoData", newTodoData);
+      setTodoData(newTodoData); // 화면에 렌더링도 해주기!
+    },
+    [todoData] // 의존성 배열. todoData가 바뀔 때에만 함수 다시 생성
+  );
 
   // 추가
   const handleSubmit = (e) => {
@@ -29,7 +39,11 @@ export default function App() {
         <div className="flex justify-between mb-3">
           <h1>할 일 목록</h1>
         </div>
-        <Lists todoData={todoData} setTodoData={setTodoData} />
+        <Lists
+          todoData={todoData}
+          setTodoData={setTodoData}
+          handleClick={handleClick}
+        />
         <Form handleSubmit={handleSubmit} value={value} setValue={setValue} />
       </div>
     </div>

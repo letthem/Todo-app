@@ -1,14 +1,16 @@
 import React from "react";
 
 const List = React.memo(
-  ({ id, title, completed, todoData, setTodoData, provided, snapshot }) => {
-    // 삭제
-    const handleClick = (id) => {
-      let newTodoData = todoData.filter((data) => data.id !== id); // 해당 id 제외한 모든 data 보여주기
-      console.log("newTodoData", newTodoData);
-      setTodoData(newTodoData); // 화면에 렌더링도 해주기!
-    };
-
+  ({
+    id,
+    title,
+    completed,
+    todoData,
+    setTodoData,
+    provided,
+    snapshot,
+    handleClick,
+  }) => {
     // 완료
     const handleCompleteChange = (id) => {
       let newTodoData = todoData.map((data) => {
