@@ -24,6 +24,7 @@ const List = React.memo(
       });
 
       setTodoData(newTodoData);
+      localStorage.setItem("todoData", JSON.stringify(newTodoData));
     };
 
     // 타이핑 하는 대로 바뀌게
@@ -42,6 +43,7 @@ const List = React.memo(
         return data;
       });
       setTodoData(newTodoData);
+      localStorage.setItem("todoData", JSON.stringify(newTodoData));
       setIsEditing(false);
     };
 

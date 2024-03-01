@@ -1,10 +1,15 @@
-import React, { useState, useCallback } from "react";
 import "./App.css";
+import React, { useState, useCallback } from "react";
 import Lists from "./components/Lists";
 import Form from "./components/Form";
 
-export default function App() {
-  const [todoData, setTodoData] = useState([]);
+// 로컬 스토리지에 있으면 가져 오고 없으면 빈 배열
+const initialTodoData = localStorage.getItem("todoData")
+  ? JSON.parse(localStorage.getItem("todoData"))
+  : [];
+
+function App() {
+  const [todoData, setTodoData] = useState(initialTodoData);
   const [value, setValue] = useState("");
 
   // 삭제
@@ -13,6 +18,7 @@ export default function App() {
       let newTodoData = todoData.filter((data) => data.id !== id); // 해당 id 제외한 모든 data 보여주기
       console.log("newTodoData", newTodoData);
       setTodoData(newTodoData); // 화면에 렌더링도 해주기!
+      localStorage.setItem("todoData", JSON.stringify(newTodoData));
     },
     [todoData] // 의존성 배열. todoData가 바뀔 때에만 함수 다시 생성
   );
@@ -30,12 +36,14 @@ export default function App() {
 
     // 원래 있던 할 일에 새로운 할 일 더해주기, value: "" <- 입력 끝나면 없애줌
     setTodoData((prev) => [...prev, newTodo]);
+    localStorage.setItem("todoData", JSON.stringify([...todoData, newTodo]));
     setValue("");
   };
 
   // 전체 삭제
   const handleRemoveClick = () => {
     setTodoData([]);
+    localStorage.setItem("todoData", JSON.stringify([]));
   };
 
   return (
@@ -55,3 +63,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
